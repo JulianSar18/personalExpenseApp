@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import './widgets/chart.dart';
 
 import './widgets/transaction_list.dart';
@@ -55,6 +57,19 @@ class _PaginaPState extends State<PaginaP> {
     }).toList();
   }
 
+  void _portraitModeOnly() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
+  void _transparentStatusBar() {
+    SystemChrome.restoreSystemUIOverlays();
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+  }
+
   void _addNewTransaction(
       String txtitle, double txamount, DateTime chosenData) {
     final newTrans = Transaction(
@@ -87,21 +102,36 @@ class _PaginaPState extends State<PaginaP> {
 
   @override
   Widget build(BuildContext context) {
+    _portraitModeOnly();
+    _transparentStatusBar();
+    final appBar = AppBar(
+      title: Text("Flutter"),
+      actions: [
+        IconButton(
+            onPressed: () => _startAddNewTransaction(context),
+            icon: Icon(Icons.add))
+      ],
+    );
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Flutter"),
-        actions: [
-          IconButton(
-              onPressed: () => _startAddNewTransaction(context),
-              icon: Icon(Icons.add))
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           //mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Chart(_recentTransactions),
-            TransactionList(_userTransactions, _deleteTransaction)
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      (MediaQuery.of(context).padding.top)) *
+                  0.3,
+              child: Chart(_recentTransactions),
+            ),
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      (MediaQuery.of(context).padding.top)) *
+                  0.7,
+              child: TransactionList(_userTransactions, _deleteTransaction),
+            )
           ],
         ),
       ),
