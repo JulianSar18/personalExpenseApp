@@ -21,8 +21,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Flutter",
       theme: ThemeData(
-        primaryColor: Colors.pink[400],
-        accentColor: Colors.green[200],
+        primaryColor: Colors.pink[300],
+        colorScheme:
+            ColorScheme.fromSwatch().copyWith(secondary: Colors.green[300]),
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
               headline6: TextStyle(
@@ -32,8 +33,10 @@ class MyApp extends StatelessWidget {
               button: TextStyle(color: Colors.white),
             ),
         appBarTheme: AppBarTheme(
-            textTheme: ThemeData.light().textTheme.copyWith(
-                headline6: TextStyle(fontFamily: 'OpenSans', fontSize: 20))),
+          textTheme: ThemeData.light().textTheme.copyWith(
+                headline6: TextStyle(fontFamily: 'OpenSans', fontSize: 20),
+              ),
+        ),
       ),
       home: PaginaP(),
     );
@@ -48,7 +51,7 @@ class PaginaP extends StatefulWidget {
 class _PaginaPState extends State<PaginaP> {
   final List<Transaction> _userTransactions = [
     Transaction(id: '1', titulo: 'juegos', monto: 10.00, fecha: DateTime.now()),
-    Transaction(id: '2', titulo: 'comida', monto: 90.00, fecha: DateTime.now()),
+    //Transaction(id: '2', titulo: 'comida', monto: 90.00, fecha: DateTime.now()),
   ];
 
   List<Transaction> get _recentTransactions {
@@ -102,6 +105,7 @@ class _PaginaPState extends State<PaginaP> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     _portraitModeOnly();
     _transparentStatusBar();
     final appBar = AppBar(
@@ -114,25 +118,27 @@ class _PaginaPState extends State<PaginaP> {
     );
     return Scaffold(
       appBar: appBar,
-      body: SingleChildScrollView(
-        child: Column(
-          //mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Container(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height -
-                      (MediaQuery.of(context).padding.top)) *
-                  0.3,
-              child: Chart(_recentTransactions),
-            ),
-            Container(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height -
-                      (MediaQuery.of(context).padding.top)) *
-                  0.7,
-              child: TransactionList(_userTransactions, _deleteTransaction),
-            )
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            //mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                height: (mediaQuery.size.height -
+                        appBar.preferredSize.height -
+                        (mediaQuery.padding.top)) *
+                    0.3,
+                child: Chart(_recentTransactions),
+              ),
+              Container(
+                height: (mediaQuery.size.height -
+                        appBar.preferredSize.height -
+                        (mediaQuery.padding.top)) *
+                    0.7,
+                child: TransactionList(_userTransactions, _deleteTransaction),
+              )
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
