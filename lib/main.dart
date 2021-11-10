@@ -1,4 +1,4 @@
-import 'package:flutter/services.dart';
+import 'package:expensive_app/widgets/function.dart';
 
 import './widgets/chart.dart';
 
@@ -60,19 +60,6 @@ class _PaginaPState extends State<PaginaP> {
     }).toList();
   }
 
-  void _portraitModeOnly() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-  }
-
-  void _transparentStatusBar() {
-    SystemChrome.restoreSystemUIOverlays();
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-  }
-
   void _addNewTransaction(
       String txtitle, double txamount, DateTime chosenData) {
     final newTrans = Transaction(
@@ -106,8 +93,9 @@ class _PaginaPState extends State<PaginaP> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    _portraitModeOnly();
-    _transparentStatusBar();
+    FunctionDart statusBar = FunctionDart();
+    statusBar.portraitModeOnly();
+    statusBar.transparentStatusBar();
     final appBar = AppBar(
       title: Text("Flutter"),
       actions: [
