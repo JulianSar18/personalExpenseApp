@@ -90,20 +90,24 @@ class _PaginaPState extends State<PaginaP> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    FunctionDart statusBar = FunctionDart();
-    statusBar.portraitModeOnly();
-    statusBar.transparentStatusBar();
-    final appBar = AppBar(
-      title: Text("Flutter"),
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      title: Text("Personal Expensives"),
       actions: [
         IconButton(
             onPressed: () => _startAddNewTransaction(context),
             icon: Icon(Icons.add))
       ],
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    FunctionDart statusBar = FunctionDart();
+    statusBar.portraitModeOnly();
+    statusBar.transparentStatusBar();
+    final appBar = _buildAppBar();
     return Scaffold(
       appBar: appBar,
       body: SafeArea(
